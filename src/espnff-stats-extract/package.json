@@ -1,0 +1,20 @@
+{
+  "name": "espnff-stats-extract",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "espn-fantasy-football-api": "^0.16.1"
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.2"
+  }
+}

@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "src/espnff-stats-extract"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"node_modules/": true,
+			"packages/": true,
+		}
+	}
+}
