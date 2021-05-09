@@ -1,14 +1,16 @@
-import { Client, Boxscore, League } from 'espn-fantasy-football-api/node';
+import { Client, Boxscore } from 'espn-fantasy-football-api/node';
 
-const ESPN_S2 =
-  process.env.ESPN_S2;
+const ESPN_S2 = process.env.ESPN_S2;
 const SWID = process.env.SWID;
 const LEAGUE_ID = process.env.LEAGUE_ID;
+const SEASON_ID = Number(process.env.SEASON_ID || new Date().getFullYear());
 
 export async function handler(event: any, context: any) {
-  const seasonId = 2020;
+  const seasonId = SEASON_ID;
   const myClient = new Client({ leagueId: LEAGUE_ID });
-  myClient.setCookies({ espnS2: ESPN_S2, SWID: SWID });
+  if (ESPN_S2 && SWID) {
+    myClient.setCookies({ espnS2: ESPN_S2, SWID: SWID });
+  }
   const leagueInfo = await myClient.getLeagueInfo({
     seasonId,
   });

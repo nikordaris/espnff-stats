@@ -1,21 +1,51 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
-import { ExtractEspnffStatsStack } from '../lib/espnff-stats-extract-stack';
+import { ExtractEspnffStatsConstruct } from '../lib/espnff-stats-extract';
+import { envSpecific, deployEnv } from '../lib/envTools';
+
+class ProdExtractEspnffStatsStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, props?: cdk.StackProps) {
+    super(scope, envSpecific('ExtractEspnffStatsStack'), props);
+    new ExtractEspnffStatsConstruct(
+      scope,
+      envSpecific('ExtractEspnffStatsStack'),
+      {
+        ffESPNS2: process.env.ESPN_S2,
+        ffSWID: process.env.SWID,
+      },
+    );
+  }
+}
+
+class DevExtractEspnffStatsStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, props?: cdk.StackProps) {
+    super(scope, envSpecific('ExtractEspnffStatsStack'), props);
+    new ExtractEspnffStatsConstruct(
+      scope,
+      envSpecific('ExtractEspnffStatsStack'),
+      {
+        ffESPNS2: process.env.ESPN_S2,
+        ffSWID: process.env.SWID,
+      },
+    );
+  }
+}
 
 const app = new cdk.App();
-new ExtractEspnffStatsStack(app, 'ExtractEspnffStatsStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: {
-  //   account: process.env.CDK_DEFAULT_ACCOUNT,
-  //   region: process.env.CDK_DEFAULT_REGION,
-  // },
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+
+if (['prod', 'demo'].includes(deployEnv())) {
+  new ProdExtractEspnffStatsStack(app, {
+    env: {
+      account: process.env.CDK_ACCOUNT,
+      region: process.env.CDK_REGION,
+    },
+  });
+} else {
+  new DevExtractEspnffStatsStack(app, {
+    env: {
+      account: process.env.CDK_ACCOUNT,
+      region: process.env.CDK_REGION,
+    },
+  });
+}
