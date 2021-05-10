@@ -12,6 +12,7 @@ export class DevExtractEspnffStatsStack extends cdk.Stack {
       {
         ffESPNS2: process.env.ESPN_S2,
         ffSWID: process.env.SWID,
+        bucketName: envSpecific('espnff-stats-extract'),
       },
     );
   }
