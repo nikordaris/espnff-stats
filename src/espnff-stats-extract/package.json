@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.903.0",
     "espn-fantasy-football-api": "^0.16.1"
   },
   "devDependencies": {

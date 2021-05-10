@@ -1,12 +1,16 @@
+import { S3 } from 'aws-sdk';
 import { Client, Boxscore } from 'espn-fantasy-football-api/node';
 
 const ESPN_S2 = process.env.ESPN_S2;
 const SWID = process.env.SWID;
 const LEAGUE_ID = process.env.LEAGUE_ID;
 const SEASON_ID = Number(process.env.SEASON_ID || new Date().getFullYear());
+const BUCKET_NAME = process.env.BUCKET_NAME;
 
 export async function handler(event: any, context: any) {
   const seasonId = SEASON_ID;
+  const s3Client = new S3();
+
   const myClient = new Client({ leagueId: LEAGUE_ID });
   if (ESPN_S2 && SWID) {
     myClient.setCookies({ espnS2: ESPN_S2, SWID: SWID });
@@ -49,7 +53,22 @@ export async function handler(event: any, context: any) {
         return { scoringPeriodId, teams, boxscore };
       }),
   );
-  return { seasonId, leagueInfo, teamsBoxscores };
+  const stats = { seasonId, leagueInfo, teamsBoxscores };
+  if (BUCKET_NAME && LEAGUE_ID && SEASON_ID) {
+    try {
+      const data = await s3Client
+        .upload({
+          Bucket: BUCKET_NAME,
+          Key: `${LEAGUE_ID}/${SEASON_ID}-stats.json`,
+          Body: JSON.stringify(stats),
+          ContentType: 'application/json',
+        })
+        .promise();
+      console.log('Upload Success', data.Location);
+    } catch (err) {
+      console.log('Error', err);
+    }
+  }
 }
 
 handler(null, null);

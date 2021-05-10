@@ -2,8 +2,10 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as targets from '@aws-cdk/aws-events-targets';
 import * as cdk from '@aws-cdk/core';
 import * as events from '@aws-cdk/aws-events';
+import * as s3 from '@aws-cdk/aws-s3';
 
 interface ExtractEspnffStatsProps {
+  bucketName: string;
   cronOptions?: events.CronOptions;
   lambdaTimeout?: cdk.Duration;
   ffLeagueId?: string;
@@ -32,6 +34,11 @@ export class ExtractEspnffStatsConstruct extends cdk.Construct {
   ) {
     super(scope, id);
     const options = { ...DefaultProps, ...props };
+
+    const bucket = new s3.Bucket(this, 'ExtractEspnffStatsStore', {
+      bucketName: options.bucketName,
+    });
+
     const lambdaFn = new lambda.Function(this, 'ExtractEspnffStats', {
       code: lambda.Code.fromAsset('src/espnff-stats-extract'),
       handler: 'index.handler',
@@ -42,6 +49,7 @@ export class ExtractEspnffStatsConstruct extends cdk.Construct {
         SWID: options.ffSWID,
         LEAGUE_ID: options.ffLeagueId,
         SEASON_ID: options.ffSeasonId,
+        BUCKET_NAME: bucket.bucketName,
       },
     });
 

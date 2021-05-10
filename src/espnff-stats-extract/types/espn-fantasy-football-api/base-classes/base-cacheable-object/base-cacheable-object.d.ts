@@ -15,65 +15,54 @@ export default BaseCacheableObject;
  * @extends {BaseObject}
  */
 declare class BaseCacheableObject extends BaseObject {
-    /**
-     * Defers to `BaseObject._populateObject` and then caches the instance using the caching id from
-     * `getCacheId`.
-     * @override
-     */
-    static _populateObject({ data, constructorParams, instance, isDataFromServer }: {
-        data: any;
-        constructorParams: any;
-        instance: any;
-        isDataFromServer: any;
-    }): any;
-    /**
-     * Sets the cache object.
-     * @param {Object.<String, BaseCacheableObject>} cache
-     */
-    static set cache(arg: any);
-    /**
-     * Returns all cached instances of an BaseCacheableObject. If no cache exists, a cache object is
-     * created. This implementation ensures each class has a unique cache of only instances of the
-     * BaseCacheableObject that does not overlap with other BaseCacheableObject classes. The keys of
-     * the cache should use the caching id implemented in `getCacheId`.
-     * @return {Object.<String, BaseCacheableObject>} The cache of BaseCacheableObjects.
-     */
-    static get cache(): any;
-    /**
-     * Resets cache to an empty object.
-     */
-    static clearCache(): void;
-    /**
-     * Returns a cached instance matching the passed caching id if it exists. Otherwise, returns
-     * undefined.
-     * @param  {Number} id This id must match the form of the caching id provided by `getCacheId`.
-     * @return {BaseCacheableObject|undefined}
-     */
-    static get(id: number): BaseCacheableObject | undefined;
-    /**
-     * Should be overridden by each subclass. Returns an object containing all IDs used for API
-     * requests and caching.
-     * @return {Object}
-     */
-    static getIDParams(): any;
-    /**
-     * Constructs and returns an id for the cache if possible from the passed params. If construction
-     * is not possible, returns undefined.
-     * @param  {Object} idParams
-     * @return {string|undefined}
-     */
-    static getCacheId(idParams: any): string | undefined;
-    /**
-     * Returns an object containing all IDs used for API requests and caching for the instance.
-     * @return {Object}
-     */
-    getIDParams(): any;
-    /**
-     * Returns the id used for caching. Important for classes that have multiple identifiers. Example:
-     * League is identified by its `leagueId` and its `seasonId`. This method prevents separate
-     * seasons from overriding each other's data.
-     * @return {String|undefined}
-     */
-    getCacheId(): string | undefined;
+  /**
+   * Sets the cache object.
+   * @param {Object.<String, BaseCacheableObject>} cache
+   */
+  static set cache(arg: any);
+  /**
+   * Returns all cached instances of an BaseCacheableObject. If no cache exists, a cache object is
+   * created. This implementation ensures each class has a unique cache of only instances of the
+   * BaseCacheableObject that does not overlap with other BaseCacheableObject classes. The keys of
+   * the cache should use the caching id implemented in `getCacheId`.
+   * @return {Object.<String, BaseCacheableObject>} The cache of BaseCacheableObjects.
+   */
+  static get cache(): any;
+  /**
+   * Resets cache to an empty object.
+   */
+  static clearCache(): void;
+  /**
+   * Returns a cached instance matching the passed caching id if it exists. Otherwise, returns
+   * undefined.
+   * @param  {Number} id This id must match the form of the caching id provided by `getCacheId`.
+   * @return {BaseCacheableObject|undefined}
+   */
+  static get(id: number): BaseCacheableObject | undefined;
+  /**
+   * Should be overridden by each subclass. Returns an object containing all IDs used for API
+   * requests and caching.
+   * @return {Object}
+   */
+  static getIDParams(): any;
+  /**
+   * Constructs and returns an id for the cache if possible from the passed params. If construction
+   * is not possible, returns undefined.
+   * @param  {Object} idParams
+   * @return {string|undefined}
+   */
+  static getCacheId(idParams: any): string | undefined;
+  /**
+   * Returns an object containing all IDs used for API requests and caching for the instance.
+   * @return {Object}
+   */
+  getIDParams(): any;
+  /**
+   * Returns the id used for caching. Important for classes that have multiple identifiers. Example:
+   * League is identified by its `leagueId` and its `seasonId`. This method prevents separate
+   * seasons from overriding each other's data.
+   * @return {String|undefined}
+   */
+  getCacheId(): string | undefined;
 }
-import BaseObject from "../base-object/base-object.js";
+import BaseObject from '../base-object/base-object.js';

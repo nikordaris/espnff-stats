@@ -22,7 +22,8 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
+    "composite": true
   },
   "exclude": ["cdk.out"]
 }
